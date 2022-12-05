@@ -1,0 +1,107 @@
+filters:- 
+i1 = imread('cameraman.tif');
+subplot(1,5,1);
+imshow(i1);
+
+[m,n] = size(i1);
+
+%Average filter
+f = ones(3,3);
+i2 = cast(i1, 'double');
+i3 = i2;
+for i=2:m-1
+    for j=2:n-1
+        t = (i2(i-1, j-1) * f(1,1))  + (i2(i-1, j) * f(1,2)) + (i2(i-1, j+1) * f(1,3)) + (i2(i, j-1) * f(2,1))  + (i2(i, j) * f(2,2)) + (i2(i, j+1) * f(2,3)) + (i2(i+1, j-1) * f(3,1))  + (i2(i+1, j) * f(3,2)) + (i2(i+1, j+1) * f(3,3));
+        t = t/9;
+        i3(i,j) = t;
+    end
+end
+i3 = cast(i3, 'uint8');
+subplot(1,5,2);
+imshow(i3);
+
+%Weighted Average
+f = [1,2,1;2,4,2;1,2,1];
+i2 = cast(i1, 'double');
+i3 = i2;
+for i=2:m-1
+    for j=2:n-1
+        t = (i2(i-1, j-1) * f(1,1))  + (i2(i-1, j) * f(1,2)) + (i2(i-1, j+1) * f(1,3)) + (i2(i, j-1) * f(2,1))  + (i2(i, j) * f(2,2)) + (i2(i, j+1) * f(2,3)) + (i2(i+1, j-1) * f(3,1))  + (i2(i+1, j) * f(3,2)) + (i2(i+1, j+1) * f(3,3));
+        t = t/16;
+        i3(i,j) = t;
+    end
+end
+i3 = cast(i3, 'uint8');
+subplot(1,5,3);
+imshow(i3);
+
+%Laplacian filter
+f = [0,-1,0;-1,4,-1;0,-1,0];
+i2 = cast(i1, 'double');
+i3 = i2;
+for i=2:m-1
+    for j=2:n-1
+        t = (i2(i-1, j-1) * f(1,1))  + (i2(i-1, j) * f(1,2)) + (i2(i-1, j+1) * f(1,3)) + (i2(i, j-1) * f(2,1))  + (i2(i, j) * f(2,2)) + (i2(i, j+1) * f(2,3)) + (i2(i+1, j-1) * f(3,1))  + (i2(i+1, j) * f(3,2)) + (i2(i+1, j+1) * f(3,3));
+        i3(i,j) = t;
+    end
+end
+i3 = cast(i3, 'uint8');
+subplot(1,5,4);
+imshow(i3);
+
+%Min Filter
+
+f = [1,2,3;4,5,6;7,8,9];
+min = f(1,1);
+for i=1:256
+    for j=1:256
+        if f(i,j) < min
+            min = f(i,j);
+        end
+    end
+end
+
+i2 = i1;
+i3 = i2;
+for i=2:m-1
+    for j=2:n-1
+        t = (i2(i-1, j-1) * min)  + (i2(i-1, j) * min) + (i2(i-1, j+1) * min) + (i2(i, j-1) * min)  + (i2(i, j) * min) + (i2(i, j+1) * min) + (i2(i+1, j-1) * min)  + (i2(i+1, j) * min) + (i2(i+1, j+1) * min);
+        i3(i,j) = t;
+    end
+end
+i3 = cast(i3, 'uint8');
+subplot(1,5,5);
+imshow(i3);
+
+
+
+
+segmentaion
+img1 = imread('cameraman.tif');
+%img2 = rgb2gray(img1);  this line is applied when the image is not a gray
+                         %level image
+[m,n] = size(img1);
+img3 = zeros(m,n);
+for i=1:m
+    for j=1:n
+        if(img1(i,j)>=150)      %use gray scale level variable to compare
+            img3(i,j)=1;
+        else
+            img3(i,j) = 0;
+        end
+    end
+end
+
+subplot(1,2,1);
+imshow(img1);
+
+%subplot(1,3,2);
+%imshow(img2);
+
+subplot(1,2,2);
+imshow(img3)
+
+
+
+
+Dilation and erosion
